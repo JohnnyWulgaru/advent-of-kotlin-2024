@@ -1,0 +1,9 @@
+.gradle
+.idea
+.kotlin/
+build
+src/**/*.txt
+local.properties
+
+# we are not allowed to publish the input files
+res/inputs
