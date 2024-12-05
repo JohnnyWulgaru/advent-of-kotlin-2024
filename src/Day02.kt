@@ -17,7 +17,7 @@ fun main() {
 
         // Try removing each level and check if the resulting list is safe
         for (i in levels.indices) {
-            val modifiedLevels = levels.take(i) + levels.drop(i+1)
+            val modifiedLevels = levels.take(i) + levels.drop(i + 1)
             if (isGraduallyIncreasing(modifiedLevels) || isGraduallyDecreasing(modifiedLevels)) {
                 return true
             }

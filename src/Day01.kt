@@ -12,6 +12,7 @@ fun main() {
         }
         return left to right
     }
+
     fun part1(input: List<String>): Int {
         val (left, right) = parseLists(input.joinToString("\n"))
         left.sort()

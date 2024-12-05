@@ -7,17 +7,17 @@ fun main() {
         }
     }
 
-    fun splitInput(input: List<String>): Pair<List<Pair<Int,Int>>, List<List<Int>>>{
-        val pairs = mutableListOf<Pair<Int,Int>>()
+    fun splitInput(input: List<String>): Pair<List<Pair<Int, Int>>, List<List<Int>>> {
+        val pairs = mutableListOf<Pair<Int, Int>>()
         val numbers = mutableListOf<List<Int>>()
         var pairsMode = true
         for (line in input) {
-            if(line.isBlank()) {
+            if (line.isBlank()) {
                 pairsMode = false
                 continue
             }
 
-            if(pairsMode) {
+            if (pairsMode) {
                 val (a, b) = line.split("|").map { it.toInt() }
                 pairs.add(a to b)
             } else {
@@ -29,9 +29,9 @@ fun main() {
         return pairs to numbers
     }
 
-    fun checkPairRule(input: List<Int>, pair: Pair<Int,Int>): Boolean {
+    fun checkPairRule(input: List<Int>, pair: Pair<Int, Int>): Boolean {
         // make sure that pair.first is before pair.second if both are in the input
-        if(input.contains(pair.first) && input.contains(pair.second)) {
+        if (input.contains(pair.first) && input.contains(pair.second)) {
             return input.indexOf(pair.first) < input.indexOf(pair.second)
         } else {
             // none of the numbers match, which is ok too
@@ -43,16 +43,16 @@ fun main() {
         val (pairs, numbers) = splitInput(input)
         var count = 0
 
-        for(number in numbers) {
+        for (number in numbers) {
             var rulesCorrect = true
-            for(pair in pairs) {
-                if(!checkPairRule(number, pair)) {
+            for (pair in pairs) {
+                if (!checkPairRule(number, pair)) {
                     rulesCorrect = false
                     break
                 }
             }
 
-            if(rulesCorrect) {
+            if (rulesCorrect) {
                 // find the middle number in the number list
                 val idx = (number.size - 1) / 2
                 val num = number[idx]
@@ -66,17 +66,17 @@ fun main() {
     fun part2(input: List<String>): Int {
         val (pairs, numbers) = splitInput(input)
         var count = 0
-        for(i in numbers.indices) {
+        for (i in numbers.indices) {
             val number = numbers[i]
             var rulesCorrect = true
-            for(pair in pairs) {
-                if(!checkPairRule(number, pair)) {
+            for (pair in pairs) {
+                if (!checkPairRule(number, pair)) {
                     rulesCorrect = false
                     break
                 }
             }
 
-            if(!rulesCorrect) {
+            if (!rulesCorrect) {
                 val x = number.sortedWith(PageOrderRuleComparator(pairs))
                 val idx = (number.size - 1) / 2
                 val num = x[idx]

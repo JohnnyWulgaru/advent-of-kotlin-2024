@@ -80,14 +80,14 @@ fun main() {
         val listOfMas = findWord(input, "MAS", diagDirections)
         var overlaps = 0
 
-        for(x in listOfMas.indices) {
-            for(y in listOfMas.indices) {
-                if(x == y) continue
+        for (x in listOfMas.indices) {
+            for (y in listOfMas.indices) {
+                if (x == y) continue
 
                 val first = listOfMas[x]
                 val second = listOfMas[y]
 
-                if(!first.used && !second.used && first.letters[1] == second.letters[1]) {
+                if (!first.used && !second.used && first.letters[1] == second.letters[1]) {
                     overlaps += 1
                     first.used = true
                     second.used = true
