@@ -1,6 +1,8 @@
 fun main() {
     var maxX = 0
     var maxY = 0
+    val obsChar = '#'
+    val guardChar = '^'
 
     data class PointDir(
         var x: Int,
@@ -35,7 +37,7 @@ fun main() {
 
     fun canMove(p: Point, map: Map<Point, Char>): Boolean {
         val cell = map[p] ?: return true
-        return cell != '#'
+        return cell != obsChar
     }
 
     fun doWalk(
@@ -75,12 +77,12 @@ fun main() {
             val line = input[y]
             for (x in line.indices) {
                 when (line[x]) {
-                    '^' -> {
+                    guardChar -> {
                         guard.x = x
                         guard.y = y
                     }
 
-                    '#' -> initMap[Point(x, y)] = line[x]
+                    obsChar -> initMap[Point(x, y)] = line[x]
                     else -> {
                         /* dots and others are ignored */
                     }
@@ -113,7 +115,7 @@ fun main() {
         return (visitCoords - guardStart).count { (x, y) ->
             // clone map and add our obstruction
             val testMap = map.toMutableMap().also {
-                it[Point(x, y)] = '#'
+                it[Point(x, y)] = obsChar
             }
             doWalk(testMap, guard.copy(), true) == null
         }
