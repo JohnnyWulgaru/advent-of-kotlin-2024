@@ -74,13 +74,16 @@ fun main() {
         for (y in input.indices) {
             val line = input[y]
             for (x in line.indices) {
-                if (line[x] == '^') {
-                    guard.x = x
-                    guard.y = y
-                } else if (line[x] == '.') {
-                    //initMap[Point(x, y)] = Cell(' ')
-                } else {
-                    initMap[Point(x, y)] = line[x]
+                when (line[x]) {
+                    '^' -> {
+                        guard.x = x
+                        guard.y = y
+                    }
+
+                    '#' -> initMap[Point(x, y)] = line[x]
+                    else -> {
+                        /* dots and others are ignored */
+                    }
                 }
             }
         }
@@ -94,7 +97,7 @@ fun main() {
         val map: MutableMap<Point, Char> = parseMap(input, guard)
         val visits = doWalk(map, guard)
 
-        // extract just the locations
+        // extract just the locations since the gaurd might walk through the same spot in different directions
         return visits!!.map { it.x to it.y }.toSet().size
     }
 
@@ -105,6 +108,8 @@ fun main() {
 
         val visitCoords = visits!!.map { it.x to it.y }.toSet()
         val guardStart = Pair(guard.x, guard.y)
+
+        // go through all obstructions without the guard's starting position
         return (visitCoords - guardStart).count { (x, y) ->
             // clone map and add our obstruction
             val testMap = map.toMutableMap().also {
