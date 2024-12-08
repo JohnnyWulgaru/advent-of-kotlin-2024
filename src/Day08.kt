@@ -30,8 +30,19 @@ fun main() {
         }
     }
 
+    fun resonanceLine(grid: Grid, start: Point, diff: Point) {
+        var r = start + diff
+        do {
+            if (inBounds(r)) {
+                grid[r] = '#'
+            } else {
+                break
+            }
+            r += diff
+        } while (true)
+    }
 
-    fun markResonance(antinodeGrid: Grid, antennaLocations: List<Point>) {
+    fun markResonance(antinodeGrid: Grid, antennaLocations: List<Point>, fullResonance: Boolean) {
         for (i in antennaLocations.indices) {
             for (j in antennaLocations.indices) {
                 if (i == j) continue
@@ -41,20 +52,30 @@ fun main() {
                 val diff1 = antenna1 - antenna2
                 val diff2 = antenna2 - antenna1
 
-                val r1 = antenna1 + diff1
-                val r2 = antenna2 + diff2
+                if (fullResonance) {
+                    // antenna nodes
+                    antinodeGrid[antenna1] = '#'
+                    antinodeGrid[antenna2] = '#'
 
-                if (inBounds(r1)) {
-                    antinodeGrid[r1] = '#'
-                }
-                if (inBounds(r2)) {
-                    antinodeGrid[r2] = '#'
+                    // resonance lines
+                    resonanceLine(antinodeGrid, antenna1, diff1)
+                    resonanceLine(antinodeGrid, antenna2, diff2)
+                } else {
+                    val r1 = antenna1 + diff1
+                    val r2 = antenna2 + diff2
+
+                    if (inBounds(r1)) {
+                        antinodeGrid[r1] = '#'
+                    }
+                    if (inBounds(r2)) {
+                        antinodeGrid[r2] = '#'
+                    }
                 }
             }
         }
     }
 
-    fun part1(input: List<String>): Long {
+    fun solve(input: List<String>, fullResonance: Boolean = false): Long {
         val grid = parseMap(input)
         val antinodeGrid = mutableMapOf<Point, Char>()
         for (y in 0..maxY) {
@@ -67,15 +88,14 @@ fun main() {
 
         for (antennaType in uniqueAntennas) {
             val antennaLocations = grid.filterValues { it == antennaType }.keys
-            markResonance(antinodeGrid, antennaLocations.toList())
+            markResonance(antinodeGrid, antennaLocations.toList(), fullResonance)
         }
-        grid.draw()
+        antinodeGrid.draw()
         return antinodeGrid.values.count { it == '#' }.toLong()
     }
 
-    fun part2(input: List<String>): Long {
-        return input.size.toLong()
-    }
+    fun part1(input: List<String>) = solve(input)
+    fun part2(input: List<String>) = solve(input, true)
 
     val day = 8
 
