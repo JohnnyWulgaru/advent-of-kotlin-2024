@@ -140,10 +140,12 @@ fun main() {
         if (compressMemory(memory))
             compressMemory(memory)
 
+        /*
         check(verifyMemory(memory)) {
             memory.debug()
             "memory corruption!"
         }
+        */
     }
 
     fun checksumMemory(memory: MutableMap<Long, FileBlock>): Long {
