@@ -38,15 +38,19 @@ fun main() {
     }
 
     fun findFirstHole(memory: MutableMap<Long, FileBlock>, size: Int): Long? {
-        val holesAddresses = memory.filter { it.value.id == null }.map { it.key }.toList().sortedBy { it }
-
-        for (addr in holesAddresses) {
-            val block = memory[addr]
-            check(block != null) { "Block at address $addr is null" }
-            if (block.size >= size) {
-                return addr
+        memory
+            .asSequence()
+            .filter { it.value.id == null }
+            .map { it.key }
+            .sorted()
+            .forEach { addr ->
+                val block = memory[addr]
+                check(block != null) { "Block at address $addr is null" }
+                if (block.size >= size) {
+                    return addr
+                }
             }
-        }
+
         return null
     }
 
@@ -137,8 +141,8 @@ fun main() {
             memory[to + fromBlock.size] = FileBlock(null, toBlock.size - fromBlock.size)
         }
 
-        if (compressMemory(memory))
-            compressMemory(memory)
+        //if (compressMemory(memory))
+        //    compressMemory(memory)
 
         /*
         check(verifyMemory(memory)) {
