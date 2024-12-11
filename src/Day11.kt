@@ -73,7 +73,7 @@ fun main() {
         }
 
     }
-    val blinkMemoized = MemoizedDeepRecursiveFunction(arrowCache) { (number, iter) ->
+    val blinkMemoizedArrow = MemoizedDeepRecursiveFunction(arrowCache) { (number, iter) ->
         if (iter == 0) {
             1
         } else {
@@ -106,7 +106,7 @@ fun main() {
         sum = 0L
         val arrowDuration = measureTime {
             for (stone in stones) {
-                sum += blinkMemoized(stone to 75)
+                sum += blinkMemoizedArrow(stone to 75)
             }
         }
         println("Arrow: $arrowDuration")
