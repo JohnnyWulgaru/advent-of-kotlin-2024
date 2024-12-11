@@ -67,8 +67,14 @@ fun main() {
 
     val arrowCache = object : MemoizationCache<Pair<Long, Int>, Long> {
         val cache = mutableMapOf<Pair<Long, Int>, Long>()
-        override fun get(key: Pair<Long, Int>): Long? = cache[key]
+        var hit = 0L
+        var miss = 0L
+        override fun get(key: Pair<Long, Int>): Long? {
+            hit += 1L
+            return cache[key]
+        }
         override fun set(key: Pair<Long, Int>, value: Long): Long {
+            miss += 1L
             cache[key] = value; return value
         }
 
@@ -110,6 +116,9 @@ fun main() {
             }
         }
         println("Arrow: $arrowDuration")
+        println("Arrow Cache: ${arrowCache.cache.size}")
+        println("Arrow Hit: ${arrowCache.hit}")
+        println("Arrow Miss: ${arrowCache.miss}")
 
         return sum
     }
