@@ -13,7 +13,7 @@ fun main() {
      * If the stone is engraved with a number that has an even number of digits, it is replaced by two stones. The left half of the digits are engraved on the new left stone, and the right half of the digits are engraved on the new right stone. (The new numbers don't keep extra leading zeroes: 1000 would become stones 10 and 0.)
      * If none of the other rules apply, the stone is replaced by a new stone; the old stone's number multiplied by 2024 is engraved on the new stone.
      */
-    fun blink(i: List<Long>): List<Long> {
+    fun blinkList(i: List<Long>): List<Long> {
         val newList = mutableListOf<Long>()
         for (number in i) {
             if (number == 0L) {
@@ -36,29 +36,31 @@ fun main() {
     fun part1(input: List<String>): Long {
         var stones = input[0].split(" ").map { it.toLong() }
         repeat(25) {
-            stones = blink(stones)
+            stones = blinkList(stones)
         }
         return stones.size.toLong()
     }
 
     val blinkMemoizedSimpleCache = mutableMapOf<Pair<Long, Int>, Long>()
-    fun blinkMemoizedSimple(stone: Long, numBlinks: Int): Long {
-        if (numBlinks == 0) return 1
+    fun blinkMemoizedSimple(number: Long, iter: Int): Long {
+        if (iter == 0) return 1
 
-        val cacheKey = stone to numBlinks
+        val cacheKey = number to iter
         blinkMemoizedSimpleCache[cacheKey]?.let { return it }
 
-        val totalStones = when {
-            stone == 0L -> blinkMemoizedSimple(1, numBlinks - 1)
-            stone.toString().length % 2 == 0 -> {
-                val strStone = stone.toString()
-                val stone1 = strStone.substring(0, strStone.length / 2).toLong()
-                val stone2 = strStone.substring(strStone.length / 2).toLong()
-                blinkMemoizedSimple(stone1, numBlinks - 1) + blinkMemoizedSimple(stone2, numBlinks - 1)
-            }
+        val totalStones = if (number == 0L) {
+            blinkMemoizedSimple(1L, iter - 1)
+        } else if (number.toString().length % 2 == 0) {
+            val s = number.toString()
+            // val split in half
+            val left = s.substring(0, s.length / 2).toLong()
+            val right = s.substring(s.length / 2).toLong()
 
-            else -> blinkMemoizedSimple(stone * 2024, numBlinks - 1)
+            blinkMemoizedSimple(left, iter - 1) + blinkMemoizedSimple(right, iter - 1)
+        } else {
+            blinkMemoizedSimple(number * 2024, iter - 1)
         }
+
         blinkMemoizedSimpleCache[cacheKey] = totalStones
         return totalStones
     }
