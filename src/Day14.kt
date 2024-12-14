@@ -3,16 +3,18 @@ val realSize = Point(101, 103)
 
 data class Robot(val id: Int, var p: Point, val v: Point)
 
-fun Robot.move(size: Point) {
-    var x = (p.x + v.x)
-    var y = (p.y + v.y)
+fun Robot.move(size: Point, steps: Int = 1) {
+    for (i in 1..steps) {
+        var x = (p.x + v.x)
+        var y = (p.y + v.y)
 
-    if (x < 0) x += size.x
-    if (x >= size.x) x -= size.x
-    if (y < 0) y += size.y
-    if (y >= size.y) y -= size.y
+        if (x < 0) x += size.x
+        if (x >= size.x) x -= size.x
+        if (y < 0) y += size.y
+        if (y >= size.y) y -= size.y
 
-    p = Point(x, y)
+        p = Point(x, y)
+    }
 }
 
 val robotRegex = """p=(-?\d+),(-?\d+) v=(-?\d+),(-?\d+)""".toRegex()
@@ -26,21 +28,6 @@ fun main() {
         }
     }
 
-    fun simRobots(robots: List<Robot>, steps: Int, size: Point): List<Robot> {
-        return robots.map {
-            var (x, y) = it.p
-            for (i in 1..steps) {
-                x += it.v.x
-                y += it.v.y
-
-                if (x < 0) x += size.x
-                if (x >= size.x) x -= size.x
-                if (y < 0) y += size.y
-                if (y >= size.y) y -= size.y
-            }
-            Robot(it.id, Point(x, y), it.v)
-        }
-    }
 
     fun printRobots(size: Point, endRobots: List<Robot>) {
         for (y in 0..size.y) {
@@ -71,6 +58,12 @@ fun main() {
         return q1 * q2 * q3 * q4
     }
 
+    fun simRobots(robots: List<Robot>, steps: Int, size: Point) {
+        robots.forEach {
+            it.move(size, steps)
+        }
+    }
+
     /*
      * Can't resuse my code from part 1 since we need to do step by step, not robot by robot.
      */
@@ -89,9 +82,8 @@ fun main() {
     fun part1(input: List<String>, test: Boolean = false): Long {
         val size = if (test) testSize else realSize
         val robots = parseRobots(input)
-        val endPositions = simRobots(robots, 100, size)
-        val results = countQuadrants(endPositions, size)
-        return results.toLong()
+        simRobots(robots, 100, size)
+        return countQuadrants(robots, size).toLong()
     }
 
     fun part2(input: List<String>, test: Boolean = false): Long {
