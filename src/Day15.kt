@@ -1,8 +1,5 @@
 enum class Direction(val x: Int, val y: Int) {
-    N(0, -1),
-    S(0, 1),
-    E(1, 0),
-    W(-1, 0)
+    N(0, -1), S(0, 1), E(1, 0), W(-1, 0)
 }
 
 operator fun Point.plus(direction: Direction) = Point(x + direction.x, y + direction.y)
@@ -123,59 +120,57 @@ fun main() {
         val nextWhat = map[next]
 
         if (direction == Direction.W || direction == Direction.E) {
-            if (nextWhat in listOf('[', ']')) {
-                if (recursivePushBig(map, next, direction)) {
+            when (nextWhat) {
+                in listOf('[', ']') -> {
+                    return if (recursivePushBig(map, next, direction)) {
+                        map.remove(start)
+                        if (startWhat != null) map[next] = startWhat
+                        true
+                    } else {
+                        false
+                    }
+                }
+
+                '#' -> {
+                    return false
+                }
+
+                null -> {
                     map.remove(start)
                     if (startWhat != null) map[next] = startWhat
                     return true
-                } else {
-                    return false
                 }
-            } else if (nextWhat == '#') {
-                return false
-            } else if (nextWhat == null) {
-                map.remove(start)
-                if (startWhat != null) map[next] = startWhat
-                return true
             }
         } else {
+            when (nextWhat) {
+                '[', ']' -> {
+                    val (left, right) = if (nextWhat == '[') {
+                        Pair(next, next + Direction.E)
+                    } else {
+                        Pair(next + Direction.W, next)
+                    }
 
-            if (nextWhat == '[') {
-                val left = next
-                val right = next + Direction.E
+                    val leftOk = recursivePushBig(map, left, direction)
+                    val rightOk = recursivePushBig(map, right, direction)
 
-                val leftOk = recursivePushBig(map, left, direction)
-                val rightOk = recursivePushBig(map, right, direction)
+                    return if (leftOk && rightOk) {
+                        map.remove(left)
+                        map.remove(right)
+                        map[left + direction] = '['
+                        map[right + direction] = ']'
+                        true
+                    } else {
+                        false
+                    }
+                }
 
-                if (leftOk && rightOk) {
-                    map.remove(left)
-                    map.remove(right)
-                    map[left + direction] = '['
-                    map[right + direction] = ']'
-                    return true
-                } else {
+                '#' -> {
                     return false
                 }
-            } else if (nextWhat == ']') {
-                val left = next + Direction.W
-                val right = next
 
-                val leftOk = recursivePushBig(map, left, direction)
-                val rightOk = recursivePushBig(map, right, direction)
-
-                if (leftOk && rightOk) {
-                    map.remove(left)
-                    map.remove(right)
-                    map[left + direction] = '['
-                    map[right + direction] = ']'
+                null -> {
                     return true
-                } else {
-                    return false
                 }
-            } else if (nextWhat == '#') {
-                return false
-            } else if (nextWhat == null) {
-                return true
             }
         }
 
@@ -218,10 +213,7 @@ fun main() {
             }
         }
 
-        return map.filterValues { it == 'O' }
-            .keys
-            .sumOf { it.boxGps() }
-            .toLong()
+        return map.filterValues { it == 'O' }.keys.sumOf { it.boxGps() }.toLong()
 
     }
 
@@ -262,10 +254,7 @@ fun main() {
         }
 
         //printMap(map, robot)
-        return map.filterValues { it == '[' }
-            .keys
-            .sumOf { it.boxGps() }
-            .toLong()
+        return map.filterValues { it == '[' }.keys.sumOf { it.boxGps() }.toLong()
     }
 
     val day = 15
