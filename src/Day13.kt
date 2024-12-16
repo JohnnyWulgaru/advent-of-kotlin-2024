@@ -1,11 +1,11 @@
-data class Button(val id: Char, val x: Long, val y: Long)
-data class Prize(val x: Long, val y: Long)
-data class Machine(val buttons: Map<Char, Button>, val prize: Prize)
-
-val buttonRegex = """Button ([AB]): X\+(\d+), Y\+(\d+)""".toRegex()
-val prizeRegex = """Prize: X=(\d+), Y=(\d+)""".toRegex()
-
 fun main() {
+    data class Button(val id: Char, val x: Long, val y: Long)
+    data class Prize(val x: Long, val y: Long)
+    data class Machine(val buttons: Map<Char, Button>, val prize: Prize)
+
+    val buttonRegex = """Button ([AB]): X\+(\d+), Y\+(\d+)""".toRegex()
+    val prizeRegex = """Prize: X=(\d+), Y=(\d+)""".toRegex()
+
     fun parseMachines(lines: List<String>): List<Machine> = buildList {
         var currentButtons = mutableMapOf<Char, Button>()
         var currentPrize: Prize? = null

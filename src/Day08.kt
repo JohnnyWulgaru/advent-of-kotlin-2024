@@ -1,5 +1,3 @@
-typealias Grid = MutableMap<Point, Char>
-
 fun main() {
     var maxX = 0
     var maxY = 0

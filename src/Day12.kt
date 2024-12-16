@@ -1,58 +1,57 @@
-data class Line(val start: Point, val end: Point)
+fun main() {
+    data class Area(
+        var id: Char,
+        var plots: Set<Point>
+    )
 
-data class Area(
-    var id: Char,
-    var plots: Set<Point>
-)
-
-fun Area.isInside(point: Point): Boolean {
-    return plots.contains(point)
-}
-
-fun Area.area() = plots.size.toLong()
-
-fun Area.outline() = plots.sumOf {
-    // find the neighbors of the point and count how many of them are inside the plot
-    val neighbors = listOf(Point(it.x + 1, it.y), Point(it.x - 1, it.y), Point(it.x, it.y + 1), Point(it.x, it.y - 1))
-    4L - neighbors.count { plot -> plot in plots }
-}
-
-fun Area.sides(): Int {
-    val s = mutableSetOf<Pair<Point, Point>>()
-
-    for (plot in plots) {
-        val directions = listOf(Point(-1, 0), Point(0, 1), Point(1, 0), Point(0, -1))
-
-        for (d in directions) {
-            // Check if the opposite (90 degree) neighbor is not in the set
-            if (Point(plot.x + d.y, plot.y + d.x) in plots) {
-                continue
-            }
-
-            // set the starting point to walk this direction
-            var current = plot
-
-            // Walk along the direction while conditions are met
-            while (true) {
-                val nextOnCheck = Point(current.x + d.y, current.y + d.x) // 90 degree check
-                val nextOnWalk = current + d
-                if (nextOnWalk !in plots) break
-                if (nextOnCheck in plots) break
-                current = nextOnWalk
-            }
-
-            s.add(current to d)
-        }
+    fun Area.isInside(point: Point): Boolean {
+        return plots.contains(point)
     }
 
-    return s.size
-}
+    fun Area.area() = plots.size.toLong()
 
-fun Area.debug() = "Area(id=$id, area=${area()}, outline=${outline()} sides=${sides()})"
+    fun Area.outline() = plots.sumOf {
+        // find the neighbors of the point and count how many of them are inside the plot
+        val neighbors =
+            listOf(Point(it.x + 1, it.y), Point(it.x - 1, it.y), Point(it.x, it.y + 1), Point(it.x, it.y - 1))
+        4L - neighbors.count { plot -> plot in plots }
+    }
 
-fun MutableMap<Point, Char>.at(point: Point): Char? = this[point]
+    fun Area.sides(): Int {
+        val s = mutableSetOf<Pair<Point, Point>>()
 
-fun main() {
+        for (plot in plots) {
+            val directions = listOf(Point(-1, 0), Point(0, 1), Point(1, 0), Point(0, -1))
+
+            for (d in directions) {
+                // Check if the opposite (90 degree) neighbor is not in the set
+                if (Point(plot.x + d.y, plot.y + d.x) in plots) {
+                    continue
+                }
+
+                // set the starting point to walk this direction
+                var current = plot
+
+                // Walk along the direction while conditions are met
+                while (true) {
+                    val nextOnCheck = Point(current.x + d.y, current.y + d.x) // 90 degree check
+                    val nextOnWalk = current + d
+                    if (nextOnWalk !in plots) break
+                    if (nextOnCheck in plots) break
+                    current = nextOnWalk
+                }
+
+                s.add(current to d)
+            }
+        }
+
+        return s.size
+    }
+
+    fun Area.debug() = "Area(id=$id, area=${area()}, outline=${outline()} sides=${sides()})"
+
+    fun MutableMap<Point, Char>.at(point: Point): Char? = this[point]
+
     fun parseMap(input: List<String>): MutableMap<Point, Char> {
         val map = mutableMapOf<Point, Char>()
 

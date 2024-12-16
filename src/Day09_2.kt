@@ -1,9 +1,8 @@
-data class FileBlock(
-    val id: Int?,
-    val size: Int,
-)
-
 fun main() {
+    data class FileBlock(
+        val id: Int?,
+        val size: Int,
+    )
 
     fun MutableMap<Long, FileBlock>.debug() {
         val addresses = this.keys.toList().sortedBy { it }

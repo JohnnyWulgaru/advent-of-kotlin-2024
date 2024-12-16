@@ -1,25 +1,25 @@
-val testSize = Point(11, 7)
-val realSize = Point(101, 103)
-
-data class Robot(val id: Int, var p: Point, val v: Point)
-
-fun Robot.move(size: Point, steps: Int = 1) {
-    for (i in 1..steps) {
-        var x = (p.x + v.x)
-        var y = (p.y + v.y)
-
-        if (x < 0) x += size.x
-        if (x >= size.x) x -= size.x
-        if (y < 0) y += size.y
-        if (y >= size.y) y -= size.y
-
-        p = Point(x, y)
-    }
-}
-
-val robotRegex = """p=(-?\d+),(-?\d+) v=(-?\d+),(-?\d+)""".toRegex()
-
 fun main() {
+    val testSize = Point(11, 7)
+    val realSize = Point(101, 103)
+
+    data class Robot(val id: Int, var p: Point, val v: Point)
+
+    fun Robot.move(size: Point, steps: Int = 1) {
+        for (i in 1..steps) {
+            var x = (p.x + v.x)
+            var y = (p.y + v.y)
+
+            if (x < 0) x += size.x
+            if (x >= size.x) x -= size.x
+            if (y < 0) y += size.y
+            if (y >= size.y) y -= size.y
+
+            p = Point(x, y)
+        }
+    }
+
+    val robotRegex = """p=(-?\d+),(-?\d+) v=(-?\d+),(-?\d+)""".toRegex()
+
     fun parseRobots(input: List<String>): List<Robot> = buildList {
         for (i in input.indices) {
             val line = input[i]
