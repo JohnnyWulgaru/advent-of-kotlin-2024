@@ -1,7 +1,7 @@
 fun main() {
     fun Point.boxGps() = 100 * y + x
 
-    fun printMap(map: MutableMap<Point, Char>, robot: Point) {
+    fun printMap(map: Grid<Char>, robot: Point) {
         for (y in 0..map.keys.maxOf { it.y }) {
             for (x in 0..map.keys.maxOf { it.x }) {
                 if (robot.x == x && robot.y == y) {
@@ -14,8 +14,8 @@ fun main() {
         }
     }
 
-    fun parseMap(input: List<String>, big: Boolean = false): MutableMap<Point, Char> {
-        val map = mutableMapOf<Point, Char>()
+    fun parseMap(input: List<String>, big: Boolean = false): Grid<Char> {
+        val map: Grid<Char> = mutableMapOf()
 
         for (y in input.indices) {
             val line = input[y]
@@ -72,11 +72,11 @@ fun main() {
         return allDirections
     }
 
-    fun parseStuff(input: List<String>, big: Boolean = false): Pair<MutableMap<Point, Char>, List<List<Direction>>> {
+    fun parseStuff(input: List<String>, big: Boolean = false): Pair<Grid<Char>, List<List<Direction>>> {
         return parseMap(input, big) to parseDirections(input)
     }
 
-    fun recursivePush(map: MutableMap<Point, Char>, start: Point, direction: Direction): Boolean {
+    fun recursivePush(map: Grid<Char>, start: Point, direction: Direction): Boolean {
         val next = start + direction
         return when {
             map[next] == null -> {
@@ -106,7 +106,7 @@ fun main() {
         }
     }
 
-    fun recursivePushBig(map: MutableMap<Point, Char>, start: Point, direction: Direction): Boolean {
+    fun recursivePushBig(map: Grid<Char>, start: Point, direction: Direction): Boolean {
         val startWhat = map[start]
         val next = start + direction
         val nextWhat = map[next]

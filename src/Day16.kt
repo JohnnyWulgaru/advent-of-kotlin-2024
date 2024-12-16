@@ -1,7 +1,7 @@
 import java.util.*
 
 fun main() {
-    data class Input(val map: MutableMap<Point, Char>, val start: Point, val end: Point)
+    data class Input(val map: Grid<Char>, val start: Point, val end: Point)
     data class Reindeer(
         val pos: Point,
         val dir: Direction,
@@ -19,7 +19,7 @@ fun main() {
     )
 
     fun parseMap(input: List<String>): Input {
-        val map = mutableMapOf<Point, Char>()
+        val map: Grid<Char> = mutableMapOf()
         var start = Point(0, 0)
         var end = Point(0, 0)
         for (y in input.indices) {

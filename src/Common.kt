@@ -1,4 +1,5 @@
-typealias Grid = MutableMap<Point, Char>
+typealias Grid<T> = MutableMap<Point, T>
+typealias CharGrid = Grid<Char>
 
 enum class Direction(val x: Int, val y: Int) {
     N(0, -1), S(0, 1), E(1, 0), W(-1, 0)

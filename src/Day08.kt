@@ -1,8 +1,8 @@
 fun main() {
     var maxX = 0
     var maxY = 0
-    fun parseMap(input: List<String>): Grid {
-        val grid: Grid = mutableMapOf()
+    fun parseMap(input: List<String>): CharGrid {
+        val grid: CharGrid = mutableMapOf()
         for (y in input.indices) {
             val line = input[y]
             for (x in line.indices) {
@@ -19,7 +19,7 @@ fun main() {
         return !(p.x < 0 || p.x > maxX || p.y < 0 || p.y > maxY)
     }
 
-    fun Grid.draw() {
+    fun CharGrid.draw() {
         for (y in 0..maxY) {
             for (x in 0..maxX) {
                 print(this[Point(x, y)] ?: ' ')
@@ -28,7 +28,7 @@ fun main() {
         }
     }
 
-    fun resonanceLine(grid: Grid, start: Point, diff: Point) {
+    fun resonanceLine(grid: CharGrid, start: Point, diff: Point) {
         var r = start + diff
         do {
             if (inBounds(r)) {
@@ -40,7 +40,7 @@ fun main() {
         } while (true)
     }
 
-    fun markResonance(antinodeGrid: Grid, antennaLocations: List<Point>, fullResonance: Boolean) {
+    fun markResonance(antinodeGrid: CharGrid, antennaLocations: List<Point>, fullResonance: Boolean) {
         for (i in antennaLocations.indices) {
             for (j in antennaLocations.indices) {
                 if (i == j) continue
