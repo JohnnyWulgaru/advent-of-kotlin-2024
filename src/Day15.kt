@@ -1,11 +1,5 @@
-enum class Direction(val x: Int, val y: Int) {
-    N(0, -1), S(0, 1), E(1, 0), W(-1, 0)
-}
-
 operator fun Point.plus(direction: Direction) = Point(x + direction.x, y + direction.y)
-
 fun Point.boxGps() = 100 * y + x
-
 
 fun main() {
 

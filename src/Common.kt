@@ -18,3 +18,28 @@ fun <T> permutations(possibilities: List<T>, length: Int): List<List<T>> {
 
     return result
 }
+
+enum class Direction(val x: Int, val y: Int) {
+    N(0, -1), S(0, 1), E(1, 0), W(-1, 0)
+}
+
+fun Direction.id() = when (this) {
+    Direction.N -> 0
+    Direction.S -> 1
+    Direction.E -> 2
+    Direction.W -> 3
+}
+
+fun Direction.left() = when (this) {
+    Direction.N -> Direction.W
+    Direction.S -> Direction.E
+    Direction.E -> Direction.N
+    Direction.W -> Direction.S
+}
+
+fun Direction.right() = when (this) {
+    Direction.N -> Direction.E
+    Direction.S -> Direction.W
+    Direction.E -> Direction.S
+    Direction.W -> Direction.N
+}
