@@ -1,5 +1,4 @@
 fun main() {
-    operator fun Point.plus(direction: Direction) = Point(x + direction.x, y + direction.y)
     fun Point.boxGps() = 100 * y + x
 
     fun printMap(map: MutableMap<Point, Char>, robot: Point) {

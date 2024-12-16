@@ -73,8 +73,6 @@ fun main() {
         queue.add(start)
 
         while (queue.isNotEmpty()) {
-            val entry = queue.size
-
             val current = queue.removeFirst()
             points.add(current)
 

@@ -27,7 +27,6 @@ fun <T> permutations(possibilities: List<T>, length: Int): List<List<T>> {
     return result
 }
 
-
 fun Direction.id() = when (this) {
     Direction.N -> 0
     Direction.S -> 1
