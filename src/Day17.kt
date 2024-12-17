@@ -208,8 +208,8 @@ fun main() {
             jnz 0
          */
 
-        // A = A / 2^3
-        // out ((((A mod 8) xor 1) xor (A / 2^(A mod 8) xor 1)))) xor 4))
+        // A = A / 8
+        // out ((((A mod 8) xor 1) xor (A / 2^((A mod 8) xor 1))) xor 4) mod 8
 
         val computer = parseProgram(input)
         val originalProgram = computer.program.toMutableList()
