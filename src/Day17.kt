@@ -188,7 +188,7 @@ fun main() {
         return -1
     }
 
-    fun reverseEngineerPart2(input: List<String>, start: Long = 0): Long {
+    fun reverseEngineerPart2(input: List<String>): Long {
         /*
         2 4
             B = A mod 8
@@ -207,6 +207,9 @@ fun main() {
         3 0
             jnz 0
          */
+
+        // A = A / 2^3
+        // out ((((A mod 8) xor 1) xor (A / 2^(A mod 8) xor 1)))) xor 4))
 
         val computer = parseProgram(input)
         val originalProgram = computer.program.toMutableList()
