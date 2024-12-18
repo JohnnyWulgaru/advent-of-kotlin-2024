@@ -1,6 +1,17 @@
 typealias Grid<T> = MutableMap<Point, T>
 typealias CharGrid = Grid<Char>
 
+fun <T> Grid<T>.debug(emptyChar: Char? = ' ', maxXIn: Int? = null, maxYIn: Int? = null) {
+    val maxX = maxXIn ?: keys.maxOf { it.x }
+    val maxY = maxYIn ?: keys.maxOf { it.y }
+    for (y in 0..maxY) {
+        for (x in 0..maxX) {
+            print(this[Point(x, y)] ?: emptyChar)
+        }
+        println()
+    }
+}
+
 enum class Direction(val x: Int, val y: Int) {
     N(0, -1), S(0, 1), E(1, 0), W(-1, 0)
 }
